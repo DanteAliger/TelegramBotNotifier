@@ -11,9 +11,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import bot.web.request.PersonRq;
 import bot.web.response.PersonResponse;
-
-
-
 import java.util.Optional;
 
 @Service

@@ -3,9 +3,8 @@ package bot;
 import bot.constant.Const;
 import bot.constant.Event;
 import bot.service.EventService;
-import bot.web.display.EventDisplay;
 import bot.web.mapper.EventMapper;
-import bot.web.request.EventAddRq;
+import bot.web.mapper.StringMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +27,6 @@ import static bot.constant.Const.*;
 @Slf4j
 @Component
 public class CoreBot extends TelegramLongPollingBot {
-
-    EventAddRq eventAddRq = new EventAddRq();
 
     private static final Map<Long,Branch> BRANCH_MAP = new ConcurrentHashMap<>();
 
@@ -60,15 +57,14 @@ public class CoreBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Branch branch=getBranch(update.getMessage().getFrom().getId());
-
         if (update.hasMessage() && update.getMessage().hasText()) {
             switch (Event.of(update.getMessage().getText())) {
                 case START_WORK -> {
-                    run(sendMessageOperatorService.templateSelectAddEvent(update, branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
+                    run(sendMessageOperatorService.templateSelectAddEvent(update, StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
                     branch.setWriting(true).setEvent(Event.SELECT_TIMETABLE_ADD_EVENT);
                 }
                 case START_PLANING -> {
-                    run(sendMessageOperatorService.template(update, branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
+                    run(sendMessageOperatorService.template(update, StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
                 }
 
                 case SUBSCRIBE -> {
@@ -97,7 +93,7 @@ public class CoreBot extends TelegramLongPollingBot {
 
                 case CANCEL_TEMPLATE -> {
                     branch.setWriting(false);
-                    run(sendMessageOperatorService.template(update, branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
+                    run(sendMessageOperatorService.template(update, StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
                 }
 
                 case CANCEL_EVENT -> {
@@ -112,7 +108,7 @@ public class CoreBot extends TelegramLongPollingBot {
                 case SHOW_EVENT -> {
                     branch.setWriting(false).setEvents(branch.listToMapEvent(eventService.allEvent(PersonMapper.toRq(update),
                             new TemplateRq(branch.getSelectTemplate().getName())).get()));
-                    run(sendMessageOperatorService.showEvent(update, EventDisplay.mapToString(branch.getEvents())));
+                    run(sendMessageOperatorService.showEvent(update, StringMapper.eventMapToString(branch.getEvents())));
                 }
                 case SELECT_EVENT -> {
                     branch.setWriting(true).setEvent(Event.SELECT_EVENT);
@@ -134,21 +130,21 @@ public class CoreBot extends TelegramLongPollingBot {
                                 run(sendMessageOperatorService.template(update,
                                         templateService.createTemplate(PersonMapper.toRq(update),
                                                 new TemplateRq(update.getMessage().getText()))));
-                                run(sendMessageOperatorService.template(update, branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
+                                run(sendMessageOperatorService.template(update, StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
                                 branch.setWriting(false);
                             }
                             case DELETE_TEMPLATE -> {
                                 run(sendMessageOperatorService.template(update,
                                         templateService.deleteTemplate(PersonMapper.toRq(update),
                                                 new TemplateRq(branch.getTemplateAll().get(update.getMessage().getText()).getNameTemplate()))));
-                                run(sendMessageOperatorService.template(update, branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
+                                run(sendMessageOperatorService.template(update, StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
                                 branch.setWriting(false);
                             }
                             case SELECT_TIMETABLE -> {
                                 run(sendMessageOperatorService.template(update,
                                         templateService.selectTemplate(PersonMapper.toRq(update),
                                                 new TemplateRq(branch.getTemplateAll().get(update.getMessage().getText()).getNameTemplate()))));
-                                run(sendMessageOperatorService.template(update, branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
+                                run(sendMessageOperatorService.template(update, StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get()))));
                                 branch.setWriting(false);
                             }
                             case DELETE_EVENT -> {
@@ -160,41 +156,34 @@ public class CoreBot extends TelegramLongPollingBot {
 
                                 branch.setWriting(false).setEvents(branch.listToMapEvent(eventService.allEvent(PersonMapper.toRq(update),
                                         new TemplateRq(branch.getSelectTemplate().getName())).get()));
-                                run(sendMessageOperatorService.showEvent(update, EventDisplay.mapToString(branch.getEvents())));
+                                run(sendMessageOperatorService.showEvent(update, StringMapper.eventMapToString(branch.getEvents())));
                             }
                             case ADD_EVENT -> {
                                 switch (branch.getAddEvent()) {
                                     case ADD_EVENT_TEXT -> {
-                                        eventAddRq.setText(update.getMessage().getText());
-//                                        branch.getEventAddRq().setText(update.getMessage().getText());
+                                        branch.getEventAddRq().setText(update.getMessage().getText());
                                         branch.setWriting(true).setEvent(Event.ADD_EVENT).setAddEvent(Event.ADD_EVENT_REPEATABLE);
                                         run(sendMessageOperatorService.createEventReplay(update, Const.INFO_ADD_EVENT_PERIOD));
                                     }
                                     case ADD_EVENT_REPEATABLE -> {
-                                        eventAddRq.setRepeatable(update.getMessage().getText());
-//                                        branch.getEventAddRq().setRepeatable(update.getMessage().getText());
+                                        branch.getEventAddRq().setRepeatable(update.getMessage().getText());
                                         branch.setWriting(true).setEvent(Event.ADD_EVENT).setAddEvent(Event.ADD_EVENT_TIME);
                                         run(sendMessageOperatorService.createEvent(update, Const.INFO_ADD_EVENT_TIME));
                                     }
                                     case ADD_EVENT_TIME -> {
-                                        eventAddRq.setTime(update.getMessage().getText());
-//                                        branch.getEventAddRq().setTime(update.getMessage().getText());
+                                        branch.getEventAddRq().setTime(update.getMessage().getText());
                                         branch.setWriting(true).setEvent(Event.ADD_EVENT).setAddEvent(Event.ADD_EVENT_DATA);
                                         run(sendMessageOperatorService.createEventWeek(update, Const.INFO_ADD_EVENT_DATA));
                                     }
                                     case ADD_EVENT_DATA -> {
-                                        eventAddRq.setData(update.getMessage().getText());
-//                                        branch.getEventAddRq().setData(update.getMessage().getText());
+                                        branch.getEventAddRq().setData(update.getMessage().getText());
                                         run(sendMessageOperatorService.event(
                                                 update,
-                                                branch.mapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get())),
-                                                eventService.createEvent(PersonMapper.toRq(update), new TemplateRq(branch.getSelectTemplate().getName()), EventMapper.toRq(eventAddRq))));
+                                                StringMapper.templateMapToString(branch.listToMapTemplate(templateService.allTemplate(PersonMapper.toRq(update)).get())),
+                                                eventService.createEvent(PersonMapper.toRq(update), new TemplateRq(branch.getSelectTemplate().getName()), EventMapper.toRq(branch.getEventAddRq()))));
                                         branch.setWriting(false);
                                     }
-//                                    run(sendMessageOperatorService.template(update,
-//                                            EventService.createEvent(PersonMapper.toRq(update.getMessage().getFrom()),
-//                                                    new TemplateRq(update.getMessage().getText()))));
-//                                    branch.setWriting(false);
+
                                 }
                             }
                         }

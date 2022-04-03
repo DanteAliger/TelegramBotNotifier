@@ -2,8 +2,6 @@ package bot.web.request;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-
 import java.time.LocalDateTime;
 
 @Data

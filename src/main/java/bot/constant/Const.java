@@ -2,11 +2,9 @@ package bot.constant;
 
 public class Const {
     public static final String GREETING_MESSAGE = "Я Telegram бот-уведомитель. Моя задача - напоминать тебе о событиях на неделе. Ты можешь сделать множество расписаний (для работы, учёбы, спорта), и в каждом расписании создать свои события.\n Подписываешься? \n  ";
-    public static final String ACTION ="Выбери действие:\n";
     public static final String ACTION_EVENT ="Выбрано расписание: %s \n Выбери действие:\n";
     public static final String ACTION_TEMPLATE ="Список расписаний:\n %s \n Выбери действие:\n";
     public static final String TEMPLATE_SELECT_ADD_EVENT ="\nВ каком расписании будем редактировать события? \n Отправь номер.";
-    public static final String SCHEDULE_MESSAGE ="";
     public static final String CREATION_ERROR="Ошибка создания пользователя. Попробуй ещё раз.";
     public static final String CREATION_ERROR_TEMPLATE="Ошибка при создании расписания. \n Такое название уже существует. Попробуй ещё раз.\n Выбери действие:";
     public static final String CREATION_TEMPLATE="Операция прошла успешно! \n Выбери действие:";
@@ -19,7 +17,6 @@ public class Const {
 
     public static final String INFO_ADD_EVENT_TEXT="Какое событие добавить? \n Отправь название.";
     public static final String INFO_ADD_EVENT_PERIOD="Повтор на каждой неделе? \n (Да/Нет)";
-    public static final String INFO_ADD_EVENT_REPEATABLE="За сколько напомнить ? \n Отправь название.";
     public static final String INFO_ADD_EVENT_TIME="В какое время? \n Формат записи (ЧЧ:ММ).";
     public static final String INFO_ADD_EVENT_DATA="Какой день недели? \n";
 

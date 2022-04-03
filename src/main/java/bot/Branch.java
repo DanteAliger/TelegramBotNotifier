@@ -1,7 +1,6 @@
 package bot;
 
 import bot.constant.Event;
-import bot.constant.Status;
 import bot.web.request.EventAddRq;
 import bot.web.request.TemplateRq;
 import bot.web.response.EventResponse;
@@ -20,28 +19,15 @@ import java.util.Map;
 @Accessors(chain = true)
 @Getter
 @Setter
-//@Scope(value = "session")
 public class Branch {
     private boolean writing = false;
     private Event event;
     private Event addEvent;
-    private EventAddRq eventAddRq;
+    private EventAddRq eventAddRq = new EventAddRq();
     private TemplateRq selectTemplate;
     private Map<String, EventResponse> events;
     private Map<String , TemplateResponse> templateAll;
 
-    public String mapToString(Map<String , TemplateResponse> templateAll){
-        return
-                "Активные:\n".concat(templateAll.entrySet().stream()
-                                .filter(t-> t.getValue().getStatus()== Status.ACTIVE)
-                                .map(t-> t.getKey().concat(" - "+t.getValue().getNameTemplate()))
-                                .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутствуют.")).concat(
-                                "\n\nНеактивные:\n".concat(templateAll.entrySet().stream()
-                                        .filter(t-> t.getValue().getStatus()== Status.COMPLETED)
-                                        .map(t-> t.getKey().concat(" - "+t.getValue().getNameTemplate()))
-                                        .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутствуют.")))
-                        .concat("\n");
-    }
 
     public Map<String, TemplateResponse> listToMapTemplate(List<TemplateResponse> templateResponseList){
         templateAll = new HashMap<>();

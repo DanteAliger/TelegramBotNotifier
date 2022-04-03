@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import bot.web.request.PersonRq;
 import bot.web.request.TemplateRq;
 import bot.web.response.TemplateResponse;
-
 import java.util.List;
 import java.util.Optional;
 

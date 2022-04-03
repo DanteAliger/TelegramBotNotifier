@@ -1,6 +1,5 @@
 package bot.web.utils;
 
-
 import bot.service.NotifyService;
 import bot.web.request.NotifyRq;
 import org.springframework.beans.factory.annotation.Autowired;

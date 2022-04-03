@@ -2,7 +2,6 @@ package bot.web.mapper;
 
 import bot.web.request.PersonRq;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 public interface PersonMapper {
 
