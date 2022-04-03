@@ -12,7 +12,7 @@ public enum Event {
       START_PLANING ("Выбрать расписание"),
       START_WORK ("Перейти к событиям на этой неделе"),
 
-      SELECT_TIMETABLE_ADD_EVENT ( "Выбрать расписания для редактирования событий"),
+      SELECT_TIMETABLE_ADD_EVENT ( "Выбрать расписание для редактирования событий"),
       ADD_EVENT ( "Добавить событие"),
       ADD_EVENT_TEXT ( "Добавить текст в новое событие"),
       ADD_EVENT_REPEATABLE ( "Добавить повтор события"),
@@ -21,11 +21,11 @@ public enum Event {
 
       SHOW_EVENT ( "Показать события на неделе"),
       SELECT_EVENT ( "Изменить статус события"),
-      DELETE_EVENT ( "Удалить собыитие"),
+      DELETE_EVENT ( "Удалить событие"),
 
       ADD_TIMETABLE( "Добавить расписание"),
       DELETE_TEMPLATE( "Удалить расписание"),
-      SELECT_TIMETABLE ( "Изменить активность расписаний"),
+      SELECT_TIMETABLE ( "Изменить активность расписания"),
       BACK ("Вернуться назад"),
 
       CANCEL_TEMPLATE ("Отмена"),

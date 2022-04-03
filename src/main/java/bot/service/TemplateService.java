@@ -1,6 +1,7 @@
 package bot.service;
 
 import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,10 +20,14 @@ import java.util.Optional;
 @Service
 public class TemplateService {
 
-    static final String URL_POST_TEMPLATE = "http://localhost:8084/persons/%s/template/create";
-    static final String URL_DELETE_TEMPLATE = "http://localhost:8084/persons/%s/template/delete";
-    static final String URL_SELECT_TEMPLATE = "http://localhost:8084/persons/%s/template/select";
-    static final String URL_GET_ALL_TEMPLATE = "http://localhost:8084/persons/%s/template/all";
+    @Value(value = "${url.template.post}")
+    private String URL_POST_TEMPLATE;
+    @Value(value = "${url.template.delete}")
+    private String URL_DELETE_TEMPLATE;
+    @Value(value = "${url.template.select}")
+    private String URL_SELECT_TEMPLATE ;
+    @Value(value = "${url.template.all}")
+    private String URL_GET_ALL_TEMPLATE ;
 
     public boolean createTemplate(PersonRq personRq, TemplateRq templateRq){
         try {

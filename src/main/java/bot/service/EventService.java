@@ -6,6 +6,7 @@ import bot.web.request.PersonRq;
 import bot.web.request.TemplateRq;
 import bot.web.response.EventResponse;
 import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,9 +22,12 @@ import java.util.Optional;
 @Service
 public class EventService {
 
-    static final String URL_POST_EVENT = "http://localhost:8084/persons/%s/template/%s/event/create";
-    static final String URL_DELETE_EVENT = "http://localhost:8084/persons/%s/template/%s/event/delete";
-    static final String URL_GET_EVENT_ALL = "http://localhost:8084/persons/%s/template/%s/event/all";
+    @Value(value = "${url.event.post}")
+    private String URL_POST_EVENT;
+    @Value(value = "${url.event.delete}")
+    private  String URL_DELETE_EVENT ;
+    @Value(value = "${url.event.all}")
+    private  String URL_GET_EVENT_ALL;
 
     public boolean createEvent(PersonRq personRq, TemplateRq templateRq, EventRq eventRq){
         try {

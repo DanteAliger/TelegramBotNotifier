@@ -1,4 +1,4 @@
-package bot.web.Display;
+package bot.web.display;
 
 import bot.constant.Status;
 import bot.web.response.EventResponse;
@@ -16,13 +16,13 @@ public interface EventDisplay {
                                                 .concat("Повтор: "+t.getValue().getRepeatable()+ "\n")
                                                 .concat("Дата: "+t.getValue().getNextExecution()+ "\n"))
 
-                                .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутсвуют.")).concat(
+                                .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутствуют.")).concat(
                                 "\n\nНеактивные:\n".concat(events.entrySet().stream()
                                         .filter(t-> t.getValue().getStatus()== Status.COMPLETED)
                                         .map(t-> t.getKey().concat(" - "+t.getValue().getText() + "\n")
                                                 .concat("Повтор: "+t.getValue().getRepeatable()+ "\n")
                                                 .concat("Дата: "+t.getValue().getNextExecution()+ "\n"))
-                                        .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутсвуют.")))
+                                        .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутствуют.")))
                         .concat("\n");
     }
 

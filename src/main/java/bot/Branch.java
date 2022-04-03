@@ -35,11 +35,11 @@ public class Branch {
                 "Активные:\n".concat(templateAll.entrySet().stream()
                                 .filter(t-> t.getValue().getStatus()== Status.ACTIVE)
                                 .map(t-> t.getKey().concat(" - "+t.getValue().getNameTemplate()))
-                                .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутсвуют.")).concat(
+                                .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутствуют.")).concat(
                                 "\n\nНеактивные:\n".concat(templateAll.entrySet().stream()
                                         .filter(t-> t.getValue().getStatus()== Status.COMPLETED)
                                         .map(t-> t.getKey().concat(" - "+t.getValue().getNameTemplate()))
-                                        .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутсвуют.")))
+                                        .reduce((t1, t2)-> t1.concat("\n"+t2)).orElse("Отсутствуют.")))
                         .concat("\n");
     }
 

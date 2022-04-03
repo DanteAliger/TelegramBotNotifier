@@ -1,6 +1,7 @@
 package bot.service;
 
 import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,9 +19,11 @@ import java.util.Optional;
 @Service
 public class PersonService {
 
-    //todo  вынести в файл
-    static final String URL_GET_PERSON = "http://localhost:8084/persons/getIdTelegram";
-    static final String URL_POST_PERSON = "http://localhost:8084/persons/create";
+    @Value(value = "${url.person.get}")
+    private String URL_GET_PERSON;
+
+    @Value(value = "${url.person.post}")
+    private String URL_POST_PERSON;
 
 
     public Optional<PersonResponse> findByTelegramId(Long id) {

@@ -3,7 +3,7 @@ package bot;
 import bot.constant.Const;
 import bot.constant.Event;
 import bot.service.EventService;
-import bot.web.Display.EventDisplay;
+import bot.web.display.EventDisplay;
 import bot.web.mapper.EventMapper;
 import bot.web.request.EventAddRq;
 import lombok.extern.slf4j.Slf4j;
